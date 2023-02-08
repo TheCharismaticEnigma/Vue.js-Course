@@ -1,0 +1,44 @@
+VUE JS: 
+------
+
+- JS runs on browser. This enables us to change the UI WHILE the 
+user is using the app WITHOUT fetching the data from a server. 
+
+- JS framework that enables building interactive and reactive 
+ web frontends. 
+
+- mostly a frontend framework. (Helps in writing better frontend
+code)
+
+- Framework is third party library which: 
+a. exposes certain utility functions and API to work with. 
+b. Provides a certain structure/set of rules on how to build apps
+using that framework
+
+- Framework = library + set of instructions on building apps
+
+WHY? to use : 
+- Without frameworks/libraries we'd have to reinvent the wheel. 
+- not everyone writes code with same structure & philosophy.
+- chances of sub-optimal code increase. 
+
+Ways of utilizing VUE: 
+---------------------- 
+
+a. for controlling parts of HTML page or entire page 
+b. for controlling the ENTIRE FRONTEND.  
+
+NOTE: 
+Vanilla JS -> Imperative Syntax => specify each step. 
+
+Vue.js -> Declarative Syntax => specify end-result and
+          data only.  
+
+HOW Vue works ? 
+
+- We use declarative form of programming. We connect the 
+HTML to the DATA and LOGIC managed in the VUE app by 
+ADDING special FEATURES to the HTML code. 
+
+- These features aren't supported by HTML but only
+ understood by the VUE app. 
