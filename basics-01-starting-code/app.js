@@ -6,16 +6,13 @@ const app = Vue.createApp({
       messageToGod: `Bismillah hir rahman nur raheem`,
       vueJobLink: `https://germantechjobs.de/en/jobs/OfferZen-Frontend-Engineer`,
       vueGoogleLink: `https://www.google.com`,
+      message: `<p>Tourner Dans La Vide</p>`,
     };
   },
 
   methods: {
     getLink: function () {
-      const random = Math.random();
-
-      if (random <= 0.5) return this.vueGoogleLink;
-
-      return this.vueJobLink;
+      return Math.random() <= 0.5 ? this.vueGoogleLink : this.vueJobLink;
     },
   },
 });

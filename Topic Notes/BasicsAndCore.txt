@@ -13,12 +13,16 @@ const app = Vue.createApp() ; // a new Vue app is created
 app.mount('#unique CSS selector selecting target element') ; 
 
 - Connection is established between Vue app and target HTML element
-- We use Vue features to interact with the element
-- Done by passing an object to  .createApp() method. In this object, 
+using Vue.createApp({}).mount(). 
+- EACH VIEW APP CAN BE CONNECTED TO and thus control, 
+only  ONE SINGLE HTML ELEMENT.
+
+- We use Vue features to interact with the element. 
+- Done by passing an object to .createApp() method. In this object, 
 we configure various Options of this app. 
 
 IMPORTANT NOTE: This object has FIXED key-value pairs. 
-No arbitrary key names must be used. 
+No arbitrary key names and values  must be used. 
 
 const app = Vue.createApp({
     NOTE: This object CAN NOT take arbitrary key-value pairs.
@@ -28,7 +32,7 @@ const app = Vue.createApp({
            NOTE: 
            - THIS OBJECT can take arbitrary KEY-VALUE pairs
            - These key-value pairs stored in the object returned by function 
-           mapped to data property can be used in VUE-Controlled HTML 
+           mapped to data property can be used in VUE-Controlled HTML
         }
     }
 })
@@ -49,7 +53,7 @@ the key-name.
 BINDING with "v-bind" directive: 
 ------------------------------- 
 
-NOTE: vue directive is an extra instruction (for VUE)
+NOTE: A VUE directive is an extra instruction (for VUE)
 It's added to HTML elements. 
 
 NOTE: All built-in directives shipped with Vue start with v-
@@ -85,4 +89,15 @@ IMPORTANT:
 - 'this' keyword in VUE references to GLOBAL INSTANCE OBJECT (Vue.createApp() object) 
 Vue merges all the data returned by the object which was returned by 
 data() function into this global reference object. 
-So it's accessible using this. syntax 
+So it's accessible using `this.propertyName` syntax 
+
+
+TOPIC: Raw HTML w/ v-html directive :
+-----------------------------------
+
+v-html tells view that content added dynamically (using Interpolation
+syntax) between the HTML tags is HTML content and should not be
+interpreted as normal text. 
+
+ex. <p v-html="methodName()"></p> OR
+    <p v-html="propertyName"></p>
