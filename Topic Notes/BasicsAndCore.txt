@@ -1,0 +1,88 @@
+Creating and Connecting Vue App Instances: 
+-----------------------------------------
+
+-VUE needs to be told which part of HTML it needs to be 
+controlling . 
+
+-If Vue controls certain HTML element, it'll also control all its 
+children. 
+
+NOTE: Ids are unique selectors. 
+
+const app = Vue.createApp() ; // a new Vue app is created 
+app.mount('#unique CSS selector selecting target element') ; 
+
+- Connection is established between Vue app and target HTML element
+- We use Vue features to interact with the element
+- Done by passing an object to  .createApp() method. In this object, 
+we configure various Options of this app. 
+
+IMPORTANT NOTE: This object has FIXED key-value pairs. 
+No arbitrary key names must be used. 
+
+const app = Vue.createApp({
+    NOTE: This object CAN NOT take arbitrary key-value pairs.
+
+    data: function() { 
+        return { 
+           NOTE: 
+           - THIS OBJECT can take arbitrary KEY-VALUE pairs
+           - These key-value pairs stored in the object returned by function 
+           mapped to data property can be used in VUE-Controlled HTML 
+        }
+    }
+})
+
+- Vue scans the Controlling HTML and Detect VUE Features/
+Syntax. 
+- Different features for Different TASKS
+
+Ex. Interpolation syntax ({{ key }}) -> used to output data in HTML 
+which is coming from the object returned by data(){}, by referencing 
+the key-name. 
+- Any form (type) of data can be outputted  
+
+- Interpolation syntax is for adding data dynamically on HTML
+ elements ({{keyName}}). Only available between Opening and
+ closing HTML tags. 
+
+BINDING with "v-bind" directive: 
+------------------------------- 
+
+NOTE: vue directive is an extra instruction (for VUE)
+It's added to HTML elements. 
+
+NOTE: All built-in directives shipped with Vue start with v-
+syntax.  Ex. v-bind (instruction to bind/set a value of HTML ATTRIBUTE)
+
+- v-bind directive is for setting data (stored in Vue app)
+to the HTML element's ATTRIBUTES (dynamically)
+Ex. <a v-bind:href="vueLink"></a> 
+
+Interpolation - adding data between HTML tags. 
+v-bind - adding data to the HTML tags/to the attribute of HTML tag.
+
+TOPIC: Methods in Vue 
+
+- Just like data option, we have methods option. 
+- This option allows you to execute functions 
+- methods: { 
+    NOTE: All properties in this object, need to be functions. 
+    name: function() { ... }
+  }
+
+NOTE: Can use interpolation syntax or v-bind to call functions defined in 
+functions object. 
+Expressions are also accepted in both of these syntaxes. 
+Ex. {{Math.random() + 2}} 
+
+
+TOPIC: Data Inside Vue app :
+
+- in JS, value of this is dependent on HOW the function was called 
+
+IMPORTANT: 
+- 'this' keyword in VUE references to GLOBAL INSTANCE OBJECT (Vue.createApp() object) 
+Vue merges all the data returned by the object which was returned by 
+data() function into this global reference object. 
+So it's accessible using this. syntax 
