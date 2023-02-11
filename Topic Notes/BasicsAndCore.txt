@@ -1,5 +1,5 @@
 Creating and Connecting Vue App Instances: 
------------------------------------------
+------------------------------------------ 
 
 -VUE needs to be told which part of HTML it needs to be 
 controlling . 
@@ -101,3 +101,129 @@ interpreted as normal text.
 
 ex. <p v-html="methodName()"></p> OR
     <p v-html="propertyName"></p>
+
+TOPIC: EVENT-BINDING: 
+
+- In Vanilla Js, need to bind event listener to the element and listen to a particular 
+event. 
+- Ex. button.addEventListener('click', () => {
+    .......
+    .......
+  counter++}) ; 
+
+In VUE, 
+   <button v-on:click="counter++">ADD</button>
+
+NOTE: v-on:eventName=""
+ directive is used to add event listeners to an HTML 
+element as we wanna REACT ON something.
+Can listen to Default Events on HTML element. 
+
+Behind the Scenes: 
+- Vue updates the DOM, gets the target elements that are supposed 
+to be updated on the entire page, WITHOUT us specifying the elements 
+and updates them (like we'd do in the callback function of .addEventListener()
+method) 
+
+- Vue can call certain methods when event happens and the event 
+listener is applied. 
+Ex. (v-on:click="functionName") OR (v-on:click="name()") ; 
+
+- Can reference or call functions. Vue accepts both syntaxes 
+but it does the right thing. 
+When passing arguments, use v-on:click="name(args)" syntax.
+
+NOTE: 
+- It ain't optimal to put logic in HTML code. Most logic and 
+updations must be in VUE app and HTML code should just 
+output it 
+
+- BEST EVENT to listen to on <input> element is input event.
+
+IMPORTANT: 
+Everytime we make a change, VUE updates only the element
+that needs to be updated. And this is done BEHIND the Scenes
+by creating a virtual DOM using a JS method and comparing 
+it to our page's DOM (Forkify Project)
+- It's efficient for performance. 
+
+
+TOPIC: NATIVE EVENT OBJECT: 
+==========================
+
+IN JS, when you add an event listener and pass a callback, 
+YOU get access to event object in that callback function as it's 
+passed as an argument. 
+We can override with our own argument too. 
+
+NOTE: If we don't have any other parameters to our function, 
+and only default event then use : 
+
+<input type="text" v-on:input="name">
+
+- function name(event) {} function  will receive event object 
+
+NOTE: If we have other arguments then use: 
+
+<input type="text" v-on:input="name($event, arg1,arg2)>
+
+-function name(event, arg1, arg2) { 
+    .....
+}
+
+IMPORTANT: $event is ONLY USED when our function HAS custom 
+parameters and also needs the ACCESS to the event object.
+
+NOTE: Browser default for a submit button on a form is to submit
+THE FORM AND SEND AN HTTP request to the server serving thiss
+app. 
+
+
+TOPIC: EVENT MODIFIERS: 
+---------------------- 
+
+- Certain BUILT-IN modifiers that can be connected to the 
+events that are being listened TO CHANGE THEIR BEHAVIOUR.
+
+- Full list of supported Event Modifiers in the DOCS.
+- Modifiers do what we can do manually 
+
+- Also used to DETERMINE/CHANGE WHEN EVENT OCCURS: 
+
+a. Having click event fire When we right click instead of
+default left click.  
+Ex. <button v-on:click.right=""></button>  ==> only occur when right clicked
+
+b. Having an event trigger when CERTAIN key is pressed. 
+Ex. <button v-on:keyup.enter=""> Fire with Enter Key Only </button>
+
+Ex. preventDefault() for forms or links 
+
+<form v-on:submit="preventSubmission"></form>
+
+Event Modifier Syntax:  
+<form v-on:submit.prevent>.... </form> 
+
+TOPIC: Locking Content with v-once: 
+------------------------------ 
+
+- For fixating a value of a data that's going to change. 
+- Tells vue that any data in element should be EVALUTATED ONLY once.
+Ex. Displaying an data proprety's initial value 
+
+<p v-once>{{counter}}</p>
+
+TOPIC: DATA BINDING + EVENT BINDING = 
+                     TWO WAY BINDING 
+
+NOTE: IF you bind the value (v-bind:value="") and listen to changes 
+on the input EVENT on input HTML element (v-on:input=""), 
+VUE has another directive to replace the two directives
+
+<input type="text" v-on:input="" v-bind:value="">
+
+IMPORTANT shortcut for above two directives: v-model="". 
+VUE listens to input event on the (HTML input element) and updates the property
+and then sends the 
+property's value back to the input element THROUGH ITS 
+VALUE ATTRIBUTE. 

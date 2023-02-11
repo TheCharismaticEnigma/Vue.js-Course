@@ -1,5 +1,76 @@
 // Tourner Dans La Vide.
 
+const formApp = Vue.createApp({
+  data: function () {
+    return {
+      inputScreen: 'Saturday night',
+      ageScreen: '10',
+      countryScreen: 'Maldives',
+    };
+  },
+
+  methods: {
+    displayInput(event) {
+      this.inputScreen = event.target.value;
+    },
+
+    displayAge(event) {
+      this.ageScreen = event.target.value;
+    },
+
+    displayCountry(event) {
+      this.countryScreen = event.target.value;
+    },
+  },
+});
+
+formApp.mount('#form-section'); // establish a connection.
+
+const inputApp = Vue.createApp({
+  data: function () {
+    // below object contains data that's accessible in HTML
+
+    return {
+      inputValue: '',
+    };
+  },
+
+  methods: {
+    updateName(event, extraValue = '') {
+      this.inputValue = `${event.target.value} ${extraValue}`;
+    },
+  },
+});
+
+inputApp.mount('#input-section');
+
+const counterApp = Vue.createApp({
+  // Using this object, we use VUE features to interact
+  // with VUE controlling HTML
+
+  data: function () {
+    // returns an object which contains data that is accessible in HTML
+    return {
+      counter: 0,
+    };
+  },
+
+  methods: {
+    increaseCounter(value) {
+      this.counter = this.counter + value; // BHS vue takes all data and stores in GLOBAL INSTANCE OBJECT/VUEAPP Object.
+      return;
+    },
+
+    decreaseCounter: function (value) {
+      const prevValue = this.counter;
+      this.counter = Math.max(0, prevValue - value);
+      return;
+    },
+  },
+});
+
+counterApp.mount('#counter-section');
+
 const vueApp = Vue.createApp({
   // Object is passed to use VUE attributes in order to
   //   configure HTML controlled by VUE
