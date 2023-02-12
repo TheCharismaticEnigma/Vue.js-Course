@@ -64,10 +64,42 @@ button:active {
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.26);
 }
 
-.form-div {
+.form {
+  min-height: 20rem;
   display: flex;
+  flex-direction: column;
   gap: 2rem;
-  justify-content: space-between;
-  margin: 2rem 0;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.form__container {
+  /* border: 2px solid tomato; */
   width: 100%;
+  gap: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form__container p {
+  width: 90%;
+}
+
+.input__container {
+  width: 100%;
+  /* border: 2px solid black; */
+  height: 3rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.input__container label {
+  font-size: 1.5rem;
+}
+
+button {
+  height: 3rem;
 }

@@ -223,7 +223,125 @@ VUE has another directive to replace the two directives
 <input type="text" v-on:input="" v-bind:value="">
 
 IMPORTANT shortcut for above two directives: v-model="". 
-VUE listens to input event on the (HTML input element) and updates the property
-and then sends the 
+VUE listens to input event on the (HTML input element) and updates
+the property and then sends the 
 property's value back to the input element THROUGH ITS 
 VALUE ATTRIBUTE. 
+
+<input type="text" id ="" name="" v-model:"propertyName">
+
+WHY? Methods are not IDEAL for DATA-BINDING: 
+(Behind the Scenes) 
+
+Ex. {{methodName()}} is not IDEAL for performance-enhancement. 
+
+-  In order to update the changes in DOM, VUE executes ALL the non-event 
+bound methods because it's unsure if those method contain the changes that need 
+to be updated and shown to the user. 
+- This is not wrong but also not performance-enhancing.
+
+IMPORTANT: 
+TOPIC: COMPUTED PROPERTIES: 
+
+- Defined in the 3rd Configuration option (data(){},methods:{},computed:{}) in
+ configure object passed to vue app.
+
+- Similar to Methods.  
+- Difference: VUE Is aware of their DEPENDENCIES. Only RE-EXECUTED if 
+the dependencies is CHANGED. 
+
+- computed (like methods) takes an object in which we define methods
+but they're CALLED and EXECUTED Differently. 
+
+- These computed properties are USED LIKE PROPERTIES and not methods
+(like getters and setters in vanilla JS) even though they're methods
+
+- You just point at it like a variable. VUE BEHIND the scenes calls it.
+- Vue caches the computed properties and stores it. And only if a dependency
+used in the computed property is changed, then it is re-executed. 
+
+- IMPORTANT: FOR OUTPUTING VALUES: use computed properties instead of 
+methods. USE methods FOR RECALCULATING VALUES WHENEVER ANYTHING IS 
+CHANGED. 
+
+METHODS are used to bind with events and not computed properties.
+When an event occurs, then it is handled using a method.  
+
+Computed properties are used to dynamically get data from multiple 
+input values or from input and hardcoded value.
+
+IMPORTANT: NO DATA AND COMPUTED PROPERTY must have same keyname.
+
+TOPIC: WATCHERS: 
+----------------
+
+- watch:{} option to the Configuration object. 
+
+- A function you call TELL VUE TO EXECUTE when one of its dependencies 
+is changed.  
+
+- Can be used instead of computed properties. 
+
+IMPORTANT: 
+- methods defined (key-value pairs) in watch object (watchers) SHOULD
+be of the same name as DATA PROPERTIES. 
+This tells VUE to reexecute this method when data property(dependency) is 
+changed. 
+
+- watcher function automatically gets the last value of data property 
+as argument AND ALSO THE OLD VALUE. (optional argument) 
+
+watch: { 
+    name(value)  { value = ..... }
+}
+
+NOTE: Difference between watchers and computer properties
+- We don't call this explicity in HTML, VUE does that.
+It contains the logic that should be executed when the
+dependency is changed. 
+
+IMPORTANTNOTE: 
+ COMPUTED PROPERTIES ARE better for dynamically getting 
+data from watchers IF ONE/MORE DEPENDENCIES are changed because 
+if we use watchers, FOR EACH dependency that could be changed, 
+we need a separate watcher with a lot of duplication. 
+
+WHY? do we use watchers: 
+-------------------------
+
+- When A data should be watched continuously BUT the change must 
+be done very seldom 
+
+- Ex. sending HTTP requests if a certain data changes. 
+Ex. 
+ watch: { 
+     age(value) { 
+        if (value > 100) 
+            value = 0 ; 
+     }
+}
+
+METHODS: 
+- for event binding 
+- for data that needs to be re-executed every time dependency changes. 
+
+COMPUTED properties: 
+- for data that needs to be re-evalueated when one/more dependencies
+are changed. 
+- for dynamically outputting data (frequenctly) 
+
+WATCHERS: 
+- NOTE: NOT DIRECTLY used in HTML TEMPLATE. (vue controlled html) 
+- Used to watch data/computed properties (HAVE SAME KEYNAME) 
+- only when re-evaluation is seldom and condition-based. 
+Ex. http request due to change of dependency
+
+
+IMPORTANT SHORTHANDS
+
+v-on:click.right="" ====>  @click.right="" 
+v-bind:value ="" =====> :value="" 
+
+TOPIC: Dynamic Stylings with Inline Styles: 
+
+- IN VUE, styles can be changed dynamically (in reaction to something)

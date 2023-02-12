@@ -15,82 +15,40 @@
 
   <body>
     <section id="form-section">
-      <form v-on:submit.prevent="">
-        <div class="form-div">
-          <label for="name">What are you called? </label>
-          <input
-            v-on:input="displayInput"
-            autocomplete="off"
-            type="text"
-            id="name"
-            name="name"
-          />
+      <form v-on:submit.prevent="" class="form">
+        <div class="form__container">
+          <div class="input__container">
+            <label for="name">Name: </label>
+            <input
+              type="text"
+              class="form__input"
+              id="name"
+              autocomplete="off"
+              spellcheck="false"
+              name="name"
+              v-on:focus="clearInput"
+              v-model="name"
+            />
+          </div>
+
+          <p class="name-display">{{updateName}}</p>
         </div>
 
-        <p class="input-display">{{inputScreen}}</p>
-        <p v-once class="initial-input-display">
-          INITIAL VALUE: {{inputScreen}}
-        </p>
+        <div class="form__container">
+          <div class="button__container">
+            <button class="incrementButton" v-on:click="incrementOne">
+              +1
+            </button>
+            <button class="decrementButton" v-on:click="incrementFive">
+              +5
+            </button>
+          </div>
 
-        <div class="form-div">
-          <label for="age">How old are you?</label>
-          <input
-            type="number"
-            id="age"
-            name="age"
-            v-on:keydown.enter="displayAge"
-          />
+          <p class="counter-display">{{displayAge}}</p>
         </div>
-
-        <p class="age-display-screen">{{ageScreen}}</p>
-
-        <div class="form-div">
-          <label for="country">Where the fuck are you from?</label>
-          <input
-            type="text"
-            id="country"
-            name="country"
-            v-on:keydown.enter="displayCountry"
-          />
-        </div>
-
-        <p class="country-display-screen">{{countryScreen}}</p>
 
         <button type="submit">Submit</button>
       </form>
-    </section>
-
-    <section id="input-section">
-      <input
-        type="text"
-        v-on:input="updateName($event, `Praise be to Allah!`)"
-      />
-      <p class="inputDisplay">Input: {{inputValue}}</p>
-    </section>
-
-    <section id="counter-section">
-      <button class="addButton" v-on:click="increaseCounter(5) ">ADD</button>
-      <button class="reduceButton" v-on:click="decreaseCounter(5)">
-        REDUCE
-      </button>
-      <p class="displayCounter">Counter: {{counter}}</p>
-    </section>
-
-    <section id="assignment">
-      <!-- 1) Output your name -->
-      <h2>{{myName}}</h2>
-      <!-- 2) Output your age -->
-      <p>{{myAge}}</p>
-      <!-- 3) Output your age + 5 -->
-      <p>{{getFutureAge()}}</p>
-      <!-- 4) Output a random number (0 to 1) -->
-      <p>Favorite Number: {{getMyNumber()}}</p>
-      <div>
-        <!-- 5) Display some image you found via Google -->
-        <img v-bind:src="myImage" />
-      </div>
-      <!-- 6) Prepopulate the input field with your name via the "value" attribute -->
-      <input type="text" v-bind:value="myName" />
     </section>
   </body>
 </html>
