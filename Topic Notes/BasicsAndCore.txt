@@ -342,6 +342,66 @@ IMPORTANT SHORTHANDS
 v-on:click.right="" ====>  @click.right="" 
 v-bind:value ="" =====> :value="" 
 
+
 TOPIC: Dynamic Stylings with Inline Styles: 
 
-- IN VUE, styles can be changed dynamically (in reaction to something)
+- IN VUE, styles can be changed dynamically (in reaction to something) using
+Vue, v-bind: and style binding syntax. 
+( {} that can be passed as value to attributes 
+  class and style. 
+)
+
+- If we bind the attributes 'CLASS' or 'STYLE', Vue has special feature
+where these attribute take a JS object as value. (in which we can pass multiple
+key-value pairs)
+
+<div
+ class="demo" 
+ v-bind:style="{borderColor: boxIsSelected?'black':'red'}></div>
+
+IMPORTANT NOTE: 
+INLINE STYLES SHOULD BE AVOIDED as they have the most specificity
+
+
+TOPIC: Adding classes dynamically using VUE: 
+-------------------------------------------
+ex. add class active to an element if clicked to change styles because 
+inline styles are bad practice. 
+
+<div
+ v-bind:class="{demo:true, active: boxASelected}">
+</div>
+
+OTHER WAY to write : 
+
+<div 
+ class="demo" 
+ v-bind:class="{active: boxASelected, class2Name: ... }"></div>
+
+- demo will always be added as it's set to true 
+- active will be added if condition is true. 
+(BHS, toggling class if(event.target.closest().......)
+
+IMPORTANT: Can use computed properties to set classes. 
+Also useful when the logic to generate classes is very large. 
+
+computed: { 
+    boxAClasses() { 
+        return {demo:true, active:this.boxASelected} ; 
+    }
+}
+
+<div
+ :class="boxAClasses"></div>
+
+
+ TOPIC: Dynamic Classes in Array Syntax
+ -------------------------------------- 
+
+NOTE: The static classes must be written as string. 
+ <div
+  v-bind:class="['demo', {active:boxBClasses}]"></div>
+
+- Vue Reactivity System: 
+VUE Updates the DOM (only the parts that were changed) when 
+the bound data is changed. 
