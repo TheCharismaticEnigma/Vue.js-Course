@@ -2,7 +2,7 @@ Creating and Connecting Vue App Instances:
 ------------------------------------------ 
 
 -VUE needs to be told which part of HTML it needs to be 
-controlling . 
+controlling . (VuE TEMPLATE) 
 
 -If Vue controls certain HTML element, it'll also control all its 
 children. 
@@ -80,10 +80,13 @@ functions object.
 Expressions are also accepted in both of these syntaxes. 
 Ex. {{Math.random() + 2}} 
 
+- reference if no arguments, call if arguments. 
+
 
 TOPIC: Data Inside Vue app :
 
-- in JS, value of this is dependent on HOW the function was called 
+- in vanilla JS, value of this is dependent on HOW the function 
+  was called 
 
 IMPORTANT: 
 - 'this' keyword in VUE references to GLOBAL INSTANCE OBJECT (Vue.createApp() object) 
@@ -183,7 +186,8 @@ TOPIC: EVENT MODIFIERS:
 ---------------------- 
 
 - Certain BUILT-IN modifiers that can be connected to the 
-events that are being listened TO CHANGE THEIR BEHAVIOUR.
+events (that are being listened) in order TO CHANGE THEIR
+ BEHAVIOUR.
 
 - Full list of supported Event Modifiers in the DOCS.
 - Modifiers do what we can do manually 
@@ -250,7 +254,7 @@ TOPIC: COMPUTED PROPERTIES:
 - Difference: VUE Is aware of their DEPENDENCIES. Only RE-EXECUTED if 
 the dependencies is CHANGED. 
 
-- computed (like methods) takes an object in which we define methods
+- computed takes an object in which we define methods
 but they're CALLED and EXECUTED Differently. 
 
 - These computed properties are USED LIKE PROPERTIES and not methods
@@ -302,9 +306,13 @@ dependency is changed.
 
 IMPORTANTNOTE: 
  COMPUTED PROPERTIES ARE better for dynamically getting 
-data from watchers IF ONE/MORE DEPENDENCIES are changed because 
+data than watchers IF ONE/MORE DEPENDENCIES are changed because 
 if we use watchers, FOR EACH dependency that could be changed, 
 we need a separate watcher with a lot of duplication. 
+
+- computed property and watcher both watches the change in data
+property for which it was created (for watcher)/ which was used 
+in the method (for computed property) 
 
 WHY? do we use watchers: 
 -------------------------
@@ -372,7 +380,7 @@ inline styles are bad practice.
  v-bind:class="{demo:true, active: boxASelected}">
 </div>
 
-OTHER WAY to write : 
+OTHER WAY to write : using computed properties for logic.
 
 <div 
  class="demo" 
@@ -405,3 +413,126 @@ NOTE: The static classes must be written as string.
 - Vue Reactivity System: 
 VUE Updates the DOM (only the parts that were changed) when 
 the bound data is changed. 
+
+SECTION: 
+Rendering Conditional Content and Dynamic Lists: 
+
+- Showing different content based on different conditions is a 
+common scenario. 
+Ex. If promise not yet fulfilled, Show rendering spinner. 
+    When promise fulfilled, show content from API. 
+
+
+NOTE: v-if: directive is added on HTML element which is to be 
+rendered conditionally. 
+If v-if="condition...." is applied on an HTML element, VUE 
+displays the element and all of its children if 
+condition is met. 
+
+- works like normal if statement. Can combine multiple conditions. 
+- as long as result returns a truty/falsy then we can execute anything 
+in v-if="" 
+
+<ul v-if="goals.length === 0"></ul>
+
+IMPORTANT: Like normal js, we have v-else-if and v-else. 
+We can also use them directives.
+BUT v-else HAS TO BE USED DIRECTLY AFTER THE ELEMENT 
+WHICH CONTAINS v-if/v-else-if directive.
+
+NOTE: v-if and v-else directives ARE ABOUT INCLUDING 
+in the DOM and not just hiding the elements. (display:none) 
+If the condition is not met, the ELEMENT WILL NOT BE INCLUDED 
+in the DOM. 
+
+TOPIC: v-show="" 
+
+- alternative to v-if. 
+- standalone and doesn't work with v-else-if/v-else
+- use multiple v-show directives for multiple cases. 
+
+IMPORTANT DIFFERENCE:  
+element on v-if ISN'T INCLUDED in DOM 
+element with v-show directive is just HIDDEN. 
+(display:none) 
+
+NOTE: 
+USE v-if most of the time, use v-show ONLY IF AN Element's 
+visibility status (show/hide) changes a lot.
+
+TOPIC: Rendering Lists Of DATA: (v-for="JS expression")
+-----------------------------
+
+- use to render list of users, products etc. 
+- just like for of loop in JS. In each iteration, we work with an element 
+from the iterable. 
+
+NOTE: 
+-ONLY BETWEEN THE CLOSING and OPENING BRACKETS of the HTML element
+and ON the HTML element itself, 
+we have access to each element of the iterable. 
+
+(just like in a for loop. The iterator can be used ONLY inside
+the for loop)
+
+Ex. <li v-for="goal in goals">{{goal}}</li>
+goal can be accessed between and on li element. 
+
+- Entire iterable isn't re-rendered, but only the new element 
+is added to the DOM 
+
+
+NOTE: VARIATIONS IN v-for="" : 
+
+a. to get the index with the element : 
+ex.<li v-for="(goal, index) in goals"> {{goal}} and {{index}} </li>
+
+b. to get the key-value pairs from an object. 
+ex. <li v-for="(value, key, index) in {name:'a', age:31}">{{key}}:{{value}}</li>
+
+c. to loop through a range of numbers: 
+ex. v-for="number in 10" 
+
+
+NOTE: REMOVING List ITEMS: Leveraging the index and connecting The 
+item to the click listener. 
+
+<li v-for="(goal,index) in goals" @click="removeGoal(index)">
+{{goal}}:{{index}}
+</li>
+
+IMPORTANT: Reactivity (Only updating the Changed elements in DOM)
+in Vue is one of its core features. 
+
+IMPORTANT: @click.stop ==> stop modifier stops propogation of the event. 
+If an p element inside li is clicked, it makes sure the event listener 
+on li doesn't catch this while bubbling up and isn't triggered.
+
+IMPORTANT: When vue updates dom, it does in efficient way. (By Reusing elements) 
+Ex. if we delete a list item from a unordered list. It will take the DYNAMIC 
+content (from interpolation)  
+of below list item and put it in the place of previous element in order 
+to be efficient. And It could cause bugs. 
+
+IMPORTANT NOTE: 
+SO, to prevent this ADD THE NON-DEFAULT(not provided by html but By VUE)
+attribute to the element WHICH USES v-for="" directive
+Put something that uniquely identifies the element. 
+Ex. ids or some other value.
+
+WHY? 
+This unique key="" attribute tells VUE the difference between 
+each element and state like data(dynamic) is not lost.
+Bind these key attribute (v-bind:key="") to unique value.  
+
+Ex. 
+<li 
+ v-for="(goal, index) in goals" 
+ v-bind:key="uniqueId" 
+ @click="removeItem(index)"> 
+ {{goal}} - {{index}}
+</li>
+
+
+NOTE: DON'T USE v-for="" and v-if=""  directives on the same element.
+Use wrapper for v-if   
