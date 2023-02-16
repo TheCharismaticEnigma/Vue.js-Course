@@ -1,0 +1,115 @@
+How Vue Works BTS? 
+
+- All the data in the data(){} property of config object, is put in
+BTS managed Global object. (also methods) 
+
+- JS is non-reactive. 
+
+IMPORTANT:  WHY? is vue reactive.  
+
+Vue Turns the data-object into REACTIVE object by WRAPPING data 
+properties with JS feature called PROXIES. (inbuilt feature)
+Vue's notifed when new value is assigned -> vue updates DOM where 
+this property was used. 
+
+TOPIC : HOW PROXIES work?
+
+- Proxy wraps the data object.
+            We can write proxy.message (same value as obj.message)
+
+const object = { message: 'shit!'} ; 
+
+const handlerObject = { 
+    NOTE: It can set traps. Below setter function is called when 
+    we set a new property on the proxy object. 
+
+    set(target, key, value) { 
+        target => object that was wrapper. (the above object)
+    }
+}
+
+const proxy = new Proxy(object, handlerObject) ; 
+
+NOTE: We want another property to change if message changes. 
+
+const object = { 
+    message: 'Hello' , 
+    longMessage: 'World'
+} ; 
+
+const handler = { 
+    set(target, key, value) { 
+        if (key === 'message') { 
+            target.longMessage = value + 'World' 
+        }
+
+        target.message = value ; 
+    }
+}
+
+const proxy = new Proxy(object, handler) ;
+proxy.message = 'Champagne' ; 
+
+NOW, proxy.longMessage will be Champagne World. 
+
+- NOTE: Vue keeps track of elements using proxy and updates the places
+where data is used as change in value triggers the set function
+in handler{}. 
+
+TOPICNOTE: Multiple Vue apps can be mounted for multiple sections of 
+HTML but data to each app is exclusive and can't be accessed from
+other app. 
+Each Vue App works standalone. 
+Parts working in sync => single app 
+Parts working independently => individual app for each part. 
+
+IMPORTANT: TEMPLATE of VUE APP --> HTML part controlled by VUE. 
+By mounting the vue app on HTML part, the HTML part becomes TEMPLATE
+of vue app. 
+
+NOTE: Multiple ways of adding template to VUE app. 
+1. Normal way. (mounting) 
+2. Using 'template' option on config object.
+
+TOPIC: 
+WORKING WITH REFS: ~
+
+IMPORTANT: ALL vue provided properties START with '$'. 
+Ex. $event, $refs 
+
+- ALLOWS to retrieve values from DOM elements WHEN YOU NEED THEM 
+instead of all the time. 
+- Can add refs to any HTML elements. Ex. input, p, etc. 
+
+<input type="text" ref="stringIdentifier">
+
+methods: { 
+    setText() { 
+     NOTE: this.$refs is an object with key-value pairs where key
+        is the string identifier and value is the value of
+        the entire HTML element. 
+
+      this.$refs.stringIdentifier will reference HTML input element. 
+      And to get value, 
+      this.$refs.stringIdentifier.value 
+    }
+}
+
+Using refs we only access the value of input when setText() is
+called and not everytime input event is fired. 
+
+TOPIC: 
+HOW VUE updates DOM ? 
+
+- Using Proxy() VUE keeps track of modified data and also the 
+locations where update is needed.But how is DOM actually updated?
+
+- Because If real DOM was re-read on every change, 
+it would be performace depleting too. 
+
+- Using concept of VIRTUAL DOM. (VIRTUAL copy of REAL DOM. 
+Managed By JS and thus existing in memory.)
+
+- When data properties are updated in VUE => JS creates new VIRTUAL
+DOM => compares with previous copy => ONLY THE DIFFERENCES are 
+written to REAL DOM. 
