@@ -1,4 +1,63 @@
 SECTION: 
-Introducing Modules: 
---------------------
 
+Vue Components: 
+--------------
+
+- Reusable pieces of HTMl with their own CONNECTED DATA AND 
+LOGIC/BEHAVIOUR. The functionality must be exclusive to that HTML 
+block. 
+
+- Also enable us to split large project into small reusable parts with 
+each serving a purpose. 
+
+- Component is like a CUSTOM HTML element that we can re-use. In HTML page, 
+we use it like it's an element (but using its name, vue recognizes that 
+it's an vue component)
+
+- should be named with a '-' with a custom name to avoid clashing with
+HTML element name.
+- Component is a vue app 'CONNECTED TO THE main app'. But data is exclusive 
+and can't be accessed outside itself. 
+
+NOTE: For components, we give a template not using .mount() but 
+using the template option in config object. 
+
+const app = Vue.createApp({...}) ; 
+
+app.component('identifier-name', {
+    // config object just like app's config object. 
+    template: `` , 
+    
+    data() {return {...}}, 
+
+    methods: {...}, 
+})
+
+IN HTML SECTION, ONLY INSIDE our main-app template we can use the 
+component like it was a normal HTML element: 
+Each component will be working standalone with its own data and 
+functionality. 
+
+<identifier-name> </identifier-name>
+
+IMPORTANT: 
+We can REUSE SAME COMPONENT WITH DIFFERENT data (like Classes) and this
+is what makes it powerful. 
+
+- Encapsulated & isolated components can also be combined to form 
+a big app
+
+
+NOTE: 
+Local Development web Server will serve your project via HTTP(S)
+protocol.  
+
+
+- Using VUE CLI (under the hood uses node.js) : 
+
+- Additional tool used for better developer performance while using 
+Vue. 
+- Helps us create & manage bigger projects. 
+
+Create vue app/project using command :  vue create project-name 
+run the live-server using npm run serve 
