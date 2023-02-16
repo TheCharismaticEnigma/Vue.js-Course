@@ -3,7 +3,7 @@ How Vue Works BTS?
 - All the data in the data(){} property of config object, is put in
 BTS managed Global object. (also methods) 
 
-- JS is non-reactive. 
+- Unlike VUE, vanilla JS is non-reactive. 
 
 IMPORTANT:  WHY? is vue reactive.  
 
@@ -20,7 +20,8 @@ TOPIC : HOW PROXIES work?
 const object = { message: 'shit!'} ; 
 
 const handlerObject = { 
-    NOTE: It can set traps. Below setter function is called when 
+    NOTE: It can set traps. Below setter function is triggered/called 
+    automatically when 
     we set a new property on the proxy object. 
 
     set(target, key, value) { 
@@ -39,11 +40,10 @@ const object = {
 
 const handler = { 
     set(target, key, value) { 
-        if (key === 'message') { 
-            target.longMessage = value + 'World' 
-        }
+        if (key === 'message') 
+            target.longMessage = value + 'World' ; 
 
-        target.message = value ; 
+        target[key] = value ; 
     }
 }
 
@@ -105,11 +105,80 @@ HOW VUE updates DOM ?
 locations where update is needed.But how is DOM actually updated?
 
 - Because If real DOM was re-read on every change, 
-it would be performace depleting too. 
+it would be performace depleting too.  
 
 - Using concept of VIRTUAL DOM. (VIRTUAL copy of REAL DOM. 
-Managed By JS and thus existing in memory.)
+Managed By JS and thus existing in memory.). Because it's in memory
+it's efficient to re-read. 
 
 - When data properties are updated in VUE => JS creates new VIRTUAL
 DOM => compares with previous copy => ONLY THE DIFFERENCES are 
 written to REAL DOM. 
+
+TOPIC: 
+VUE INSTANCE LIFECYCLE: 
+
+- There're various steps to render something on the screen. Sometimes 
+code should be run during those steps. 
+
+- Specific methods are called by VUE during specific phases of its 
+life-cycle. And we can execute certain code during those life-cycles.
+Ex. cleanup code if app is unmounted.
+    HTTP request before app is mounted. 
+
+- We've different life-cycle hooks during these different steps. 
+These are methods that can be called (NOT IN METHODS OBJECT of VUE app)
+
+- Add them anywhere in the config object of VUE APP. Can do anything in these
+life-cycles (methods). Send an http request or anything.
+  Ex. data(){}, methods:{}, beforeCreate(){...} 
+
+IMPORTANT SECTION: 
+LIFE-CYCLES: (Called in this same order) 
+
+CASE a: WHEN first new Vue app is created: 
+------
+
+const app = Vue.createApp({....})
+
+beforeCreate(){} - called before app has been fully initialized
+created(){} - called after app has been initialized internally. 
+
+(At this point VUE app has been initialized internally BUT HAS NOT 
+been mounted. So nothing is rendered on screen. 
+vue is aware of data properties.
+Now template is compiled. 
+Vue features are replaced with actual values)
+
+app.mount('#...') ; 
+
+beforeMount(){} - called right before vue app data is rendered on screen
+mounted() {} - right after vue app is mounted. 
+
+now we can see something on screen. Vue hands instruction 
+to browser to display HTML with content defined by VUE app.  
+
+CASE b: WHEN VUE APP DATA CHANGES in existing VUE APP 
+        => TRIGGERS its own different life-cycle (hooks)
+------
+
+beforeUpdate(){} - called before data is updated to REAL DOM.
+updated(){} - called RIGHT after data is updated.  
+
+CASE c: WHEN EXISTING VUE APP IS UNMOUNTED: 
+-------
+
+- Done using  --> .unmount() method 
+- Rarely Used. 
+
+(when vue app is unmounted, all its content is removed from screen and 
+app is dead)
+
+beforeUnmount(){} - called before app is unmounted. 
+unmounted() {} - after app is unmounted
+
+NOTE: Code that needs to be executed at certain point of time during 
+VUE app's LIFECYCLE can be executed in these methods. 
+
+NOTE: 
+mostly used life-cycle hooks : created(), mounted(), updated(), unmounted() 

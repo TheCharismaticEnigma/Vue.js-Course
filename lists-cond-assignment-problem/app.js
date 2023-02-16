@@ -18,11 +18,12 @@ const app = Vue.createApp({
 
   methods: {
     addTask(event) {
-      const task = this.taskInput.trim();
+      const inputElement = this.$refs.taskInput;
+      const task = inputElement.value.trim();
       if (task === '') return;
 
       this.tasks.push(task);
-      console.log();
+      inputElement.value = ''; // reset the value
     },
 
     removeTask(index) {
