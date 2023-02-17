@@ -28,7 +28,7 @@ app.component('identifier-name', {
     // config object just like app's config object. 
     template: `` , 
     
-    data() {return {...}}, 
+    data() {return {...}; } , 
 
     methods: {...}, 
 })
@@ -81,8 +81,8 @@ TOPIC: VUE code and .vue files:
 Code is split in three tags for DIFFERENT purposes in Single file vue
 components. 
 - <template></template>, <style></style>, and <script></script> tags
-for specific code for that component/vue app.
-HTML Code, configuration code, styles  
+for specific code exclusive to that component/vue app.
+HTML Code template , configuration code, styles  
 
 .vue files are SPECIAL feature of VUE CLI project feature. 
 
@@ -101,5 +101,42 @@ VUE CLI transpiles code during build step (BUILD WORKFLOW):
 
 IN ASSETS FOLDER -> add any images used in vue app. 
 Components FOLDER -> contains reusable vue components. 
+We then combine all those components TO FORM THE VUE APP. (App.vue) 
+Convention to name the main .vue file which contains configuration of main app
+with the name of APP.vue. (we use single file components in this app) 
 
-We combine all those components TO FORM THE VUE APP. (App.vue) 
+In App.vue, script => provide configuration for main VUE app that's going 
+to be mount on the div(#app) in public directory's index.html page. 
+
+import/export ES6 syntax is used to reuse code exported from one single file 
+component and imported to another SFComponent. 
+importing from package -> specify name only Ex. 'vue' 
+importing from custom-file -> full path 
+
+NOTE: In VUE CLI created projects, HTML code is mostly in the template 
+tag of single file component, along with its Stylings and configuration. 
+We just reuse this components. 
+
+Each component -> min app and can talk to one another.
+We have to export it if we wanna use that component. 
+If CDN was used, we'd have to create template using JS string literals. 
+Using VUE components syntax, we have template tag which does the job.
+
+
+Convention => INSIDE src folder, create a components folder which
+contains all individual components. 
+
+Component file name must reflect the name of custom HTML element that
+you'd like to create. 
+USE PASCALNAMING for naming component files.
+
+
+
+
+
+
+
+
+
+
+
