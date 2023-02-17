@@ -61,3 +61,45 @@ Vue.
 
 Create vue app/project using command :  vue create project-name 
 run the live-server using npm run serve 
+
+vue cli installs dependencies and stores all packages in node modules 
+directory. 
+
+public directory: 
+contains our index.html file which will contain vue app at the end
+
+src folder -> contains all JS code we'll write. 
+In src, 
+main.js -> entry point (vue project BTS is configured such that it 
+compiles and executes the main.js file FIRST)
+
+
+TOPIC: VUE code and .vue files: 
+---------------------------------
+
+.vue files are called SINGLE FILE COMPONENTS. 
+Code is split in three tags for DIFFERENT purposes in Single file vue
+components. 
+- <template></template>, <style></style>, and <script></script> tags
+for specific code for that component/vue app.
+HTML Code, configuration code, styles  
+
+.vue files are SPECIAL feature of VUE CLI project feature. 
+
+- They allow us to write vue apps/
+components in a better way and also re-use them. 
+
+- also allow us to separate HTML template of component, some styles 
+and the data and functionality in separate tags. 
+
+- VUE CLI uses build workflow (our code is not the working code.
+We define features but it's transpiled to regular JS code that 
+browser understands. This is build step)
+
+VUE CLI transpiles code during build step (BUILD WORKFLOW): 
+- code in .vue files ==> During build steps ==> normal JS CODE
+
+IN ASSETS FOLDER -> add any images used in vue app. 
+Components FOLDER -> contains reusable vue components. 
+
+We combine all those components TO FORM THE VUE APP. (App.vue) 
