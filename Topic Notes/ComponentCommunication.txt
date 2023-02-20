@@ -1,6 +1,10 @@
 SECTION: 
 Component Reusability and Communication:  
 
+Mechanisms for component communication: 
+1. PROPS AND EVENTS. (parent->child & child->parent respectively)
+2. PROVIDE AND INJECT. (for pass through components)
+
 TOPIC: Props(Properties) (Parent => Child Communication)
 
 - For components, they should be reusable. With exclusive logic
@@ -239,3 +243,57 @@ NOTE: props => send data into a compoent
 
 NO  -> Large vue files with bulky template and code. 
 YES => small reusable components combinded in a root Component (App.vue)
+
+NOTE: $event can be used as an alternative if you don't want to 
+provide an argument to handle the custom event (emit) from 
+the child. And want to pass on to another component to handle it. 
+
+
+Pass Through problem in components: 
+----------------------------------
+
+- we wanna pass some value from ancestor component 
+to a deeply nested component without Passing through 
+other components in between. (directly) 
+
+- not actually a problem. 
+
+- alternative can be used: 
+PROVIDE + INJECT instead of PROPS AND CUSTOM EVENTS.
+
+A parent component can serve as a dependency provider for 
+all its descendants. Any component in the descendant tree, 
+regardless of how deep it is, can inject dependencies 
+provided by components up in its parent chain.
+
+provide: function() {
+     return {key:value} 
+} option 
+
+keys  - used to detect the value
+value - actually gets injected and used by descendants.
+
+use function to access this keyword so that data properties
+from a component can be provided. 
+
+To inject, use inject option. Also available on this.
+inject: ['name']
+Ex. 
+In descendant, data() { return { fullName: this.name; }}
+
+IMPORTANT NOTE:  
+- provide + inject NEEDS parent-child relation. 
+- Doesn't work with neighbors. 
+
+- Can use provide and inject for methods too. IN JS, methods are 
+treated as variables. (first-class functions). 
+While providing point at it and while injecting it, make SURE it
+gets all the arguments.  
+
+- PROPS AND EVENTS -> default communication mechanism
+Use provide and inject WHEN YOU HAVE PASS THROUGH 
+components that pass data through props and custom-events. (emits)
+
+SECTION: 
+Deep Dive into Components: 
+
