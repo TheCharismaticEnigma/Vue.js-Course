@@ -1,0 +1,241 @@
+SECTION: 
+Component Reusability and Communication:  
+
+TOPIC: Props(Properties) (Parent => Child Communication)
+
+- For components, they should be reusable. With exclusive logic
+styles, and markup BUT DATA SHOULDN'T BE statically stored. 
+Like custom JAVA classes. 
+
+- App/Another component that uses current component must pass 
+data. So that each usage outputs different data. 
+
+- Props are used for that. Syntax is similar to that of HTML 
+attributes. (custom HTML attributes)
+- Use lower-kebab-case syntax. 
+
+IMPORTANT: Vue must be notified of props else they'd be 
+ignored as they aren't HTML attributes. 
+
+CODE IN COMPONENT FILE (.vue)/ Single file component : 
+
+In component file's Configuration object, use PROPS property
+to make vue aware of these custom attributes on component.
+ 
+- Key name is the SAME NAME that was given to the property 
+in HTML but here in camelCase. 
+(Under the hood vue will understand). 
+- Usage (Interpolation and v-bind syntax) is same as 
+data properties. 
+
+NOTE: In simplest form, props takes an array. 
+
+- the key-names of PROPS shouldn't collide with data properties 
+or computed properties. 
+- LIKE data properties, props will be available in entire 
+vue app. They will be stored in BTS managed global object. 
+So accessible using 'this' keyword. 
+
+- In template (HTML), same syntax to output data 
+/bind to attributes.
+
+
+TOPIC: Prop behavior and Changing Props(Properties)
+
+- Props are used to connect PARENT AND CHILD. Passing data 
+from parent -> child. 
+
+Ex. FriendContact component => CHILD of App Component
+    App Component => PARENT of FriendContact component 
+
+WHY? 
+FriendContact component's used in the Template(HTML) of APP. 
+
+IMPORTANT: 
+
+- VALUE of PROPS SHOULD NOT be mutated.
+ (that was initially passed to custom html attribute/prop)
+
+WHY? Vue uses UNIDIRECTIONAL data-flow. (DATA passed from parent 
+to child component SHOULD ONLY BE MODIFIED IN PARENT component)
+
+For changing the props value => 2 APPROACHES: 
+
+1. Let PARENT know that data must be changed => IT Modfies data 
+in parent itself => passes updated data to child component.
+
+2. Take Received Prop value as INITIAL value.
+- MAKE SURE value modifications are exclusive to CHILD COMPONENT 
+AND WON'T AFFECT data in the parent component. 
+
+For implmentation: 
+Create a new data property -> set it to this.propsProperty
+Now you can change the component-exclusive data property
+
+
+TOPIC: VALIDATING PROPS: 
+
+- in a complex app, more information about the props is 
+exepected. (and not just an []) for validation purposes. 
+So, pass an object instead. 
+
+<componentName name="sas" age="12" > </componentName
+>
+Ex. props: { 
+    name: {type: String, required: true}, 
+    age: {type: String, required: true}, 
+    isFavorite: { 
+        type: Boolean,
+        required: false, 
+        default: false,
+        validator: function(value) { ... check if provided value is valid.}
+    }
+}
+
+NOTE: Default value is used when prop is missing (not specified)
+Value of default can be a function too 
+
+NOTE: Get error if provided value in component tag doesn't
+match the structure of prop in config object of Component file. 
+
+NOTE: For detailed prop definitions key-value pairs,
+ see documentation. 
+
+IMPORTANT TOPIC: 
+
+Dynamic PROP VALUES: 
+------------------ 
+
+- by default VALUE for props can only be of type STRING. 
+(Like HTML attributes)
+
+NOTE: v-for="" and v-bind:propKey ="" CAN BE USED ON OUR CUSTOM
+COMPONENTS. 
+
+THIS enables use of Dynamic VALUES for props too. 
+Can execute JS expression/method/set values of any data type for
+props
+
+(v-bind: tells vue to set the value of a HTML attribute ) 
+
+Ex. <customComponent
+     v-for="friend in friends"
+     v-bind:key="friend.key"
+     v-bind:name="friend.name"
+     :age="friend.age"
+    > </customComponent>
+
+creating one custom component for each friend. 
+
+Props => from APP/parent component to child component. 
+
+
+TOPIC: Communication from CHILD => PARENT component
+(Emits) 
+
+- Some values when changed in Child Component, MUST ALSO BE 
+UPDATED BACK in Parent Component. 
+
+- Communication from CHILD => PARENT component is needed.
+ (opposite of props). Done using CUSTOM EVENTS.
+
+HOW ?  
+- when button is clicked => click event is emitted => parent can
+listen.
+ Similarly, If CUSTOM COMPONENT wants to communicate with 
+PARENT component, IT EMITS a custom-event which parent can 
+listen to and handle there. 
+
+- this.$emit() => shipped with Vue. Can be called from inside of a 
+vue component. 
+
+- this.$emit() enables us to emit CUSTOM EVENT that can be 
+listened in the parent component. 
+
+- at least one argument (name of custom event in kebab-case) 
+- FOR EVENTS NAME IS ALWAYS IN lower-kebab-case. 
+- use v-on: or @  to listen to custom events. 
+
+- also some data needs to be passed to let the parent know 
+which of the CHILD component changed a property. 
+- Can pass any number of arguments after the custom-name, all 
+these will be DATA that was updated. 
+(DATA will be received as an argument to the method which handles 
+the event in parent component)
+
+- VUE automatically takes the updated data value from parent 
+component and passes back to child component, so we don't 
+have to explicitly update the SAME data in child component
+once again. 
+
+
+UNIDIRECTIONAL data flow in both ways: 
+
+1. Data changes in Child Component. 
+2. Child component emits an event using this.$emit() method. 
+3. Listen in parent using @/v-on:custom-name="methodName" 
+4. Update data in parent component. 
+5. Parent takes the updated data => passes to child component. 
+6. Same data is automatically updated in child component too. 
+
+
+TOPIC: 
+Defining and Validating CUSTOM EVENTS: 
+
+- similar to props{}, emits{} property in config object.
+- Recommended property if custom-events are emitted. 
+
+- in props, the STRUCTURE/SHAPE of received props is defined. In
+emits{}, Structure of CUSTOM EVENTS that'll be emitted from the
+component is defined. 
+
+- part of documentation of component. 
+
+- BASIC:
+ emits: ['custom-event1-name', 'custom-event2-name]
+
+- DETAILED: 
+ emits: { 
+    'custom-event1-name': function(data that'll be emitted) { 
+        // unlike props, value is function and not object. 
+        // validation can be added. 
+     }
+ }
+
+NOTE: 
+
+Props and events added on a custom component tag automatically 
+fall through to the root component in the template of that 
+component. In the above example, 
+type and @click get added to the <button> 
+in the BaseButton component.
+
+BButton => <template>
+<button></button>
+</template>
+
+- access to these fallthrough props on a 
+built-in $attrs property (e.g. this.$attrs).
+
+- handy to build "utility" or pure presentational components 
+where you don't want to define all props & events individually.
+
+NOTE: Binding all PROPS:
+
+With v-bind="person" you pass all key-value pairs inside of 
+person as props to the custom component. 
+That of course requires person to be a JavaScript object.
+
+ex. <custom-component
+     :firstName="person.firstName" 
+     :lastName="person.lastName"> </custom-component>
+
+SHORTFORM: 
+    <custom-component v-bind="person">
+    </custom-component>
+
+NOTE: props => send data into a compoent 
+      emits => send data out of components (custom events) 
+
+NO  -> Large vue files with bulky template and code. 
+YES => small reusable components combinded in a root Component (App.vue)

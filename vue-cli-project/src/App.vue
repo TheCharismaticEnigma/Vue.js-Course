@@ -3,17 +3,45 @@
 <template>
   <section>
     <header>
-      <h1>Viva Mexico Cabrones!</h1>
+      <h1>Component Communication and Reusability</h1>
     </header>
+
+    <form-input></form-input>
+
+    <new-friend v-on:new-friend-event="addFriend($event)"></new-friend>
+
     <ul>
-      <friend-contact></friend-contact>
-      <friend-contact></friend-contact>
+      <!-- Custom data using props. -->
+
+      <!-- <friend-contact
+        full-name="Baburao Apte"
+        phone-number="4136 5142 8291"
+        email-address="baburao.apte@gmail.com"
+        is-favorite="false"
+      ></friend-contact> -->
+
+      <friend-contact
+        v-for="friend in friends"
+        v-bind:key="friend.id"
+        v-bind:id="friend.id"
+        v-bind:full-name="friend.name"
+        v-bind:phone-number="friend.phone"
+        v-bind:email-address="friend.email"
+        v-bind:is-favorite="friend.isFavorite"
+        v-on:toggle-favorite="toggleFavoriteStatus"
+        v-on:remove-friend="deleteFriend"
+      >
+      </friend-contact>
     </ul>
   </section>
 </template>
 
 <script>
+import FormInput from './components/FormInput.vue';
+
 export default {
+  components: { FormInput },
+
   data() {
     return {
       friends: [
@@ -21,7 +49,8 @@ export default {
           id: 'max',
           name: 'Max Payne',
           phone: '9921 3422 1112',
-          email: 'vivamexicocabrones@gmail.com',
+          email: 'fuckYouStreet@gmail.com',
+          isFavorite: true,
         },
 
         {
@@ -29,14 +58,42 @@ export default {
           name: 'Torner Payne',
           phone: '9231 3422 1112',
           email: 'mexicocabrones@gmail.com',
+          isFavorite: false,
+        },
+
+        {
+          id: 'john',
+          name: 'John Wayne',
+          phone: '9931 3422 1112',
+          email: 'wayneKissmeAss@gmail.com',
+          isFavorite: true,
         },
       ],
     };
   },
+
+  methods: {
+    toggleFavoriteStatus(targetId) {
+      const friend = this.friends.find((friend) => friend.id === targetId);
+      friend.isFavorite = !friend.isFavorite;
+    },
+
+    addFriend(friend) {
+      if (!friend) return;
+      this.friends.push(friend);
+    },
+
+    deleteFriend(targetId) {
+      this.friends = this.friends.filter((friend) => friend.id !== targetId);
+      // filter includes only if condition is true.
+      // the id with the targetId is deleted.
+    },
+  },
 };
 </script>
 
-// Style for the entire app
+// General Styles for the entire app .// Each component will hold the styles for
+its own template.
 
 <style>
 * {
@@ -103,3 +160,8 @@ header {
   box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.26);
 }
 </style>
+
+<!--
+   Props: parent=>child component
+   Emits: Child => prent component 
+ -->
