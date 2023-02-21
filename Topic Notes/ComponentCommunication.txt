@@ -295,5 +295,32 @@ Use provide and inject WHEN YOU HAVE PASS THROUGH
 components that pass data through props and custom-events. (emits)
 
 SECTION: 
-Deep Dive into Components: 
+Deep Dive into Components:
+
+TOPIC: 
+Global and Local Registration: 
+
+registering a component directly on app using component('name-space', object) 
+is global. Component is available anywhere in ROOT app. 
+
+LOCAL : Component WILL ONLY BE AVAILABLE inside this 
+parent component. (not even its children. Only on this component
+which is importing it)
+
+<script>
+import Component from './components/Component.vue' ; 
+
+export default { 
+    components: { 
+        'custom-html-element': Component ; // syntax1 
+        Component:Component; // syntax2 
+    }
+}
+</script>
+
+NOTE: in syntax1, NO AUTO-CLOSING TAG. <html-element></html-element>
+in syntax2, we have auto-closing tag.   <Component/>
+
+
+
 
