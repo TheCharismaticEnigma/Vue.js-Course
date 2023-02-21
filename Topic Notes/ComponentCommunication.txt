@@ -321,6 +321,82 @@ export default {
 NOTE: in syntax1, NO AUTO-CLOSING TAG. <html-element></html-element>
 in syntax2, we have auto-closing tag.   <Component/>
 
+TOPIC: 
+Scoped Styling: 
 
+- Generally, wherever you'd add styles, they'd be treated as 
+global styles (affecting entire application) and not just that specific 
+component. 
+- Can lead to style clashes and confusions.
 
+- In APP.vue (root component) -> define GLOBAL STYLES for entire app
+- In specific SFCs, specify scoped styles exclusive to those component files.
 
+- ADD SCOPED ATTRIbute on style tag. 
+
+- In browser, tags are given special data attributes. And the styles 
+are applied after selecting the elements with those attributes. 
+ex. section h2[data-v-5521122]
+
+TOPIC: SLOTS
+-------------
+
+- <slot> </slot>
+- allow/permit the reception of HTML content using vue-features. 
+
+- used when you wanna wrap your component around some other html 
+code which ALSO uses vue feature (around dynamic content)
+
+- props are used for DATA a component needs. 
+- slots are used for HTML content a component needs. 
+
+- ex. wrapping a section inside a card component to make it a 
+card-styled section. 
+
+NOTE: 
+NAMED SLOTS: used when custom component can have MULTIPLE SLOTs.
+for dynamic content. 
+
+<slot name="customSlotName"></slot>
+
+In other component where we use this, wrap the content that we'd
+like this wrapper to wrap in 
+
+<template v-slot:customSlotName></template>
+<template v-slot:default></template>
+
+- wrapped in template tag because it's ignored by browser 
+
+v-slot ==> tells vue where certain element should go to. 
+
+v-slot:default => content will go in default slot 
+
+SHORTHAND for v-slot:name ==> #name 
+# can be used instead of v-slot 
+
+TOPIC: Slot style
+----------------
+
+- dynamically added data will adhere to styles scoped to the component
+in which they're added. 
+
+- first all the content is analyzed and compiled. Prop values 
+are inserted and then the content is sent to other component (in which
+it is styled)
+
+TOPIC: DEFAULT CONTENT 
+
+- if no content was passed inside a slot (named or default) then 
+the default HTML content (IF PROVIDED) BETWEEN THE slot tag
+ will be used and rendered. 
+
+- USED ONLY IF Content is not provided from somewhere else. 
+
+NOTE: Another feature (for default content) instead of writing 
+ HTML between slots
+
+- this.$slots => information related to content passed in slots. 
+this.$slots.slotName => returns header or content inside it in form of object. 
+
+IF undefined, then we can set it to desired value. 
+USE v-if="" for evaluation of content in slots. (on the container containing <slot></slot>) 
