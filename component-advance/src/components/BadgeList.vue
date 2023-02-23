@@ -2,7 +2,7 @@
   <section>
     <base-card>
       <template v-slot:content>
-        <ul class="badge-list">
+        <ul>
           <li>
             <base-badge type="admin" caption="ADMIN"></base-badge>
           </li>
