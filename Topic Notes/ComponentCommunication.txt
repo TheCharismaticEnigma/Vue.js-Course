@@ -400,3 +400,104 @@ this.$slots.slotName => returns header or content inside it in form of object.
 
 IF undefined, then we can set it to desired value. 
 USE v-if="" for evaluation of content in slots. (on the container containing <slot></slot>) 
+
+
+TOPIC: SCOPED SLOTS (Infrequent use)
+
+WHY? 
+- SENDING data FROM component where SLOTS are DEFINED to 
+the component which provides the Markup for the slots. 
+(parent->child communication)
+
+HOW?
+- by passing data like props to the slot. 
+Can use :name="" to bind the prop value dynamically. 
+
+- the data passed in slot prop will be accessible in the 
+component where MARKUP for slot is provided. 
+
+<template v-slot:default="nameSpaceForObject">
+.... Prop Markup 
+</template>
+
+NOTE: this object (nameSpaceForObject) contains all the data provided as 
+prop by component declaring the slot. 
+
+IMPORTANT: Vue doesn't convert the props here in CAMEL casew
+when accessing. Access using same name. 
+Ex. <p>{{nameSpaceForObject.['another-prop']}}</p>
+
+IMPORTANT: 
+By default, scoped styles do not affect contents rendered
+by <slot/>.
+
+WHY? 
+- they are considered to be owned by the 
+parent component passing them in. 
+To explicitly target slot content, use the :slotted() 
+pseudo-class. 
+
+TOPIC: DYNAMIC COMPONENTS: 
+
+- used for switching components based dynamically. 
+
+<component :is="condition"></component>
+- instead of having multiple condiitions with v-if directives, have once
+component tag and bind the value of is to show the component name.
+
+- is property tells vue which component should be replaced 
+and rendered INSTEAD of the <component:is=""></component> tag. 
+
+TOPIC: Keeping components ALIVE. 
+
+- STATE of the component is lost (values in inputs etc) 
+when component is switched in the case of dynamic components. 
+
+- If component must be kept alive: use keep-alive tag to wrap 
+around component tag.
+
+ <keep-alive> 
+    <component :is=""></component>
+ </keep-alive>
+
+- BTS components are cached and not entirely removed. 
+
+TOPIC: TELEPORTING elements: 
+
+- built in teleport component. 
+
+- rendering elements that are deeply nested AT THE ROOT 
+level. Ex. error content and overlay should be rendered at the 
+root level. 
+
+- <teleport to="SELECTOR"> 
+  .... content that must be teleported. 
+</teleport>
+
+- the selector will be a CSS selector selecting an HTML element
+on our entire app in which's HTML template 
+we want this content to be appeneded 
+
+- Rendered somewhere else in DOM structure. But on the screen 
+appears like before. 
+
+NOTE: Fragments
+- Can have as many top level elements (elements not inside a particular
+root element/wrapper) per template. 
+
+VUE-STYLING: 
+-----------  (vue style guide) 
+
+FOLDER STRUCTURE: 
+- have individual folders for components with similar purposes
+Ex. components/UI/BaseCard.vue 
+Ex. layout/TheHeader.vue 
+
+- sub-folders based on features Ex. cart, map
+- PREFER LOCAL component registeration using components{} option. 
+
+- Global components only for bleeding components that're 
+reused multiple times in all components. 
+
+- in app.vue set up global styles. In other components, 
+use scoped styles exclusive to those components. 

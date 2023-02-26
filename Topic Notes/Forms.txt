@@ -1,0 +1,93 @@
+SECTION: Forms in Vue:
+
+NOTE: Buttons inside form automatically trigger submit 
+event don't matter if type is set to "submit or not.
+
+TOPIC: Getting data outta different types of inputs: 
+
+1. type="text" 
+- use hrefs 
+- or use v-model="property" or listen to @input="updateProperty"
+
+NOTE: Using v-model="" on a property, the changes made on the 
+data property will be reflected as input value. Because they're linked. 
+If we reset the data property then the same will be for the 
+value. 
+
+2. type="number"
+
+- even though entering string is prohibited as a value, 
+the value entered is of type STRING and has to be explicitly
+converted to a number. 
+
+- IMPORTANT: if v-model is used to retrieve the value of type 
+number, vue implicitly converts it to NUMBER type. 
+If hrefs are used, then value remains of type String.
+
+IMPORTANT NOTE: 
+ v-model="" works on <select> and <option> like input. 
+
+
+3. type="checkbox" and type="radio" 
+
+The name attribute specifies the name of an <input> 
+element. The name attribute is used to reference elements
+in JavaScript,
+
+- both require the id and name for label. 
+
+- in checkboxes, all options are selected. In radio buttons, 
+only one can be selected. 
+
+a] apply v-model on all inputs (checkboxes, radio) 
+- if multiple checkboxes with same name, automatically a group is created
+
+- add values to the checkboxes else vue doesn't know which values 
+to add/remove to the data property. value attribute gives each checkbox input
+a unique identifier and helps vue detect the checked input. 
+because of same name="" they are all grouped and thus, 
+there's no way to separate them if unique value isn't provided. 
+
+NOTE: 
+if multiple checkboxes with SAME NAME attribute, then get an 
+array and store value property. 
+
+if single checkbox with a name, then get true or false.
+
+NOTE: IF data is to be read once, then bleeding use refs. 
+
+NOTE: v-on:blur => when input loses focus: 
+- can do data validation if the value was invalid. 
+- can add invalid class dynamically if input was invalid.
+
+NOTE: Can also add custom-control components like checkboxes,
+or option tabs. 
+
+- input event and value attribute is EXCLUSIVE to input element. 
+Can listen to click/keydown event to emulate same behavior. 
+
+
+IMPORTANT: 
+
+- if v-model is applied on custom component, then the component
+must EMIT a specific event and receive a specific prop. 
+
+- using v-model="" on a CUSTOM COMPONENT is possible if that component 
+emits 'update:modelValue' custom event and takes 'modelValue' 
+as a prop. 
+
+props: ['modelValue'] 
+emits: ['update:modelValue'] 
+
+HOW? UNDER THE HOOD: (since v-model is a shortcut for 
+                         v-on:input="" v-bind:value="") , 
+
+using v-model on custom component is same as, 
+v-bind:model-value =""  v-on:modelValue="" 
+
+Now you can use v-model="" on a custom component. 
+
+- in order to update value in syncronized way with the property, 
+use computed property so they are re-executed when dependencies are 
+changed/updated. (Vue reactivity) 
+
