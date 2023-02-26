@@ -3,10 +3,58 @@ SECTION:
 Asynchronous programming with Vue.js : 
 ------------------------------------- 
 
+- In reality, data isn't stored in browsers, but it's stored 
+in servers owned by the developer. 
+- The application running on user's browser should fetch data 
+and then render the application. 
+
+- ex. Amazon.com's products are stored on amazon's servers. 
+
+- for writing server-side code (code that doesn't run in browser)
+and connecting course to data-base, 
+node.js.
 
 
+- USE FIREBASE INSTEAD: 
+----------------------- 
+
+- service provided by google. 
+- like having own server and logic. 
+It is our own personal backend, without writing backend code. 
+As backend code is already configured
+
+- Use data-base servide from firebase. It has REST API, an interface
+to which we can send HTTP request for data. 
+
+NOTE: HTTP request should be sent without RESTARTING the 
+application. 
+
+NOTE: 
+- We send a request to some data base code written by firebase team
+that code parses our request, extracts the data, and writes it 
+to realtime data-base. (we don't interact with data-base). 
+- add /identifier.json to URL for firebase requirements. 
 
 
+NOTE: HOW? to send HTTP request ? 
 
+- third-party packages like AXIOUS are useful for sending HTTP request 
+from inside JS. 
 
+- fetch() api from browser. 
 
+TOPIC : POST request to store data: 
+- pass another object to fetch() function to configure the request.
+- 
+fetch('....', {
+    method: 'POST', 
+
+    headers: { 
+        'Content-Type': 'application/json', 
+    }, 
+
+    body: JSON.stringify({
+        name: this.enteredName, 
+        rating:......
+    })
+}) ; 
