@@ -11,8 +11,7 @@ and then render the application.
 - ex. Amazon.com's products are stored on amazon's servers. 
 
 - for writing server-side code (code that doesn't run in browser)
-and connecting course to data-base, 
-node.js.
+and connecting course to data-base, use node.js 
 
 
 - USE FIREBASE INSTEAD: 
@@ -23,8 +22,8 @@ node.js.
 It is our own personal backend, without writing backend code. 
 As backend code is already configured
 
-- Use data-base servide from firebase. It has REST API, an interface
-to which we can send HTTP request for data. 
+- Use data-base service from firebase. It has REST API, an 
+interface to which we can send HTTP request for data. 
 
 NOTE: HTTP request should be sent without RESTARTING the 
 application. 
@@ -36,10 +35,10 @@ to realtime data-base. (we don't interact with data-base).
 - add /identifier.json to URL for firebase requirements. 
 
 
-NOTE: HOW? to send HTTP request ? 
+NOTE: HOW to send HTTP request ? 
 
 - third-party packages like AXIOUS are useful for sending HTTP request 
-from inside JS. 
+from inside JS. WHY? - requires Less Code 
 
 - fetch() api from browser. 
 
@@ -57,4 +56,38 @@ fetch('....', {
         name: this.enteredName, 
         rating:......
     })
-}) ; 
+}) ;
+
+NOTE: 
+
+Typically, Servers are built to work as a "REST API" - 
+[they have clearly defined "endPoints" 
+(URL+http) for which they do different things]
+
+Using Axious, you need to write less code, but as a downside
+have to add an extra package which in turn makes the application
+bulkier. 
+
+- fetch() returns an object (Promise) on which we can listen 
+for the data once it is there and execute code when it 
+will be there. 
+
+- Asynchronous code -> executed in Web Api Environment. 
+- synchronous code doesn't stop execution for this as it's executed 
+in execution context of call stack. 
+
+NOTE: mounted() lifecycle-hook is triggered when THE EXACT 
+component is mounted.   
+
+NOTE: Promise doesn't get rejected when there is no data. 
+
+- fetch() method rejects promise only if the erros are technical errors from our side. 
+The errors from server-side don't reject the promise. And thus, we 
+throw manual errors in order to reject the promise and then error 
+is caught and handled in catch block. 
+
+NOTE: 
+- Success code(s) if everything went right - 200 or 201 
+- Success code(s) if something went wrong - 400ish or 500ish
+
+- If !response.ok => throw an error manually. 
