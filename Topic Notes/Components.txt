@@ -44,8 +44,7 @@ We can REUSE SAME COMPONENT WITH DIFFERENT data (like Classes) and this
 is what makes it powerful. 
 
 - Encapsulated & isolated components can also be combined to form 
-a big app
-
+a big app. 
 
 NOTE: 
 Local Development web Server will serve your project via HTTP(S)

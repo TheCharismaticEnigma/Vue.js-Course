@@ -1,4 +1,4 @@
-How Vue Works BTS? 
+How Vue Works BTS?
 
 - All the data in the data(){} property of config object, is put in
 BTS managed Global object. (also methods) 

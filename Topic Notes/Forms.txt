@@ -27,7 +27,6 @@ If hrefs are used, then value remains of type String.
 IMPORTANT NOTE: 
  v-model="" works on <select> and <option> like input. 
 
-
 3. type="checkbox" and type="radio" 
 
 The name attribute specifies the name of an <input> 
@@ -36,15 +35,14 @@ in JavaScript,
 
 - both require the id and name for label. 
 
-- in checkboxes, all options are selected. In radio buttons, 
+- in checkboxes, multiple options can be selected. In radio buttons, 
 only one can be selected. 
 
 a] apply v-model on all inputs (checkboxes, radio) 
 - if multiple checkboxes with same name, automatically a group is created
 
 - add values to the checkboxes else vue doesn't know which values 
-to add/remove to the data property. value attribute gives each checkbox input
-a unique identifier and helps vue detect the checked input. 
+to add/remove to the data property. value attribute gives each checkbox input a unique identifier and helps vue detect the checked input. 
 because of same name="" they are all grouped and thus, 
 there's no way to separate them if unique value isn't provided. 
 
@@ -64,7 +62,7 @@ NOTE: Can also add custom-control components like checkboxes,
 or option tabs. 
 
 - input event and value attribute is EXCLUSIVE to input element. 
-Can listen to click/keydown event to emulate same behavior. 
+Can listen to click/keydown event to simulate same behavior. 
 
 
 IMPORTANT: 

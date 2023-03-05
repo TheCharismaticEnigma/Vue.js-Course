@@ -11,7 +11,7 @@ TOPIC: Props(Properties) (Parent => Child Communication)
 styles, and markup BUT DATA SHOULDN'T BE statically stored. 
 Like custom JAVA classes. 
 
-- App/Another component that uses current component must pass 
+- The App/other component that uses current component must pass 
 data. So that each usage outputs different data. 
 
 - Props are used for that. Syntax is similar to that of HTML 
@@ -131,9 +131,6 @@ Ex. <customComponent
 
 creating one custom component for each friend. 
 
-Props => from APP/parent component to child component. 
-
-
 TOPIC: Communication from CHILD => PARENT component
 (Emits) 
 
@@ -171,7 +168,6 @@ the event in parent component)
 component and passes back to child component, so we don't 
 have to explicitly update the SAME data in child component
 once again. 
-
 
 UNIDIRECTIONAL data flow in both ways: 
 
@@ -329,7 +325,12 @@ global styles (affecting entire application) and not just that specific
 component. 
 - Can lead to style clashes and confusions.
 
+- Furthur preventing style clashes, USE B__E--m syntax and Scoped 
+stylings. 
+
 - In APP.vue (root component) -> define GLOBAL STYLES for entire app
+Ex. normalize.css 
+
 - In specific SFCs, specify scoped styles exclusive to those component files.
 
 - ADD SCOPED ATTRIbute on style tag. 
@@ -437,6 +438,9 @@ parent component passing them in.
 To explicitly target slot content, use the :slotted() 
 pseudo-class. 
 
+NOTE: Use b__e--m to style the dynamic content in the component in which
+it was created. 
+
 TOPIC: DYNAMIC COMPONENTS: 
 
 - used for switching components based dynamically. 
@@ -447,6 +451,9 @@ component tag and bind the value of is to show the component name.
 
 - is property tells vue which component should be replaced 
 and rendered INSTEAD of the <component:is=""></component> tag. 
+
+- add all the props taken by the toberendered components on the 
+custom component tag itself. 
 
 TOPIC: Keeping components ALIVE. 
 
@@ -497,7 +504,7 @@ Ex. layout/TheHeader.vue
 - PREFER LOCAL component registeration using components{} option. 
 
 - Global components only for bleeding components that're 
-reused multiple times in all components. 
+reused multiple times in all components. ex. card
 
 - in app.vue set up global styles. In other components, 
-use scoped styles exclusive to those components. 
+use scoped styles exclusive to those components. (use bem too)  

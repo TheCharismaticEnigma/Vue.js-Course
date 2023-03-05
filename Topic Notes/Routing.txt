@@ -1,0 +1,501 @@
+SECTION: ROUTING. What and Why ? 
+
+- Routing refers to how an application's endpoints 
+(URIs) respond to client requests.
+
+- Routing is the process of path selection in any network
+A computer network is made of many machines, called 
+nodes, and paths or links that connect those nodes
+
+- Single Page Applications: Single HTML file is loaded once 
+which includes imports to the JS code.
+- JS entirely controls what's rendered on screen. 
+- only Body is updated via AJAX method using JS dynamically. 
+Ex. facebook, github etc. 
+
+- PROBLEM: One same URL for all the pages in app (which leads
+to the starting/home page). 
+Because all changes are caused by JS in async way. 
+
+- One way: (building multi-page Applications)
+Having multiple HTML files and then pointing at them. 
+But that defeats the purpose of VUE. Script code loaded 
+by another index.html file will be unrelated to script code loaded 
+by first html file. 
+
+ROUTING solves the above problem. Vue interacts with client-side 
+JS and with URL. 
+
+TOPIC: ROUTING Setup: 
+
+- npm install --save vue-router 
+- npm install --save vue-router@next  for latest version.
+
+- tell router object how to manage routing history and
+also the routes (which component should be loaded for which 
+url)
+
+- VUE uses createWebHistory() function to use the default 
+browser mechanism to track page history. (if we click back 
+we go on previous page)
+
+import { createRouter, createWebHistory } from 'vue-router'  ; 
+import componentName form '..' ; 
+
+const router = createRouter({ 
+    history: createWebHistory(), 
+    routes : [{
+        path: '/routeName', 
+        component:  componentName, 
+    }, {}], 
+}) ; 
+
+- every object in routes[] represents a separate route and 
+configuration for that route.
+
+- Make vue app AWARE of routers. Inbuilt use() method allows
+router connect to the vue app 
+
+app.use(router) ; 
+
+WHERE TO LOAD THE COMPONENT? 
+
+IMPORTANT: 
+When loading a component using router-view, THE COMPONENT
+shouldn't be declared locally or globally in app. 
+
+- instead of dynamic <component></component> USE 
+<router-vue></router-vue> to tell vue where to load the selected 
+component.
+
+- Now the local imports and registerations (local or global) can be 
+removed as vue already knows they are component and when they 
+should be displayed. 
+
+-We no more use the components using their tags. We select 
+  them using the router/load them through routing. 
+
+- when right url is given, <router-vue></router-vue> will 
+be replaced by respective component. It's a placeholder.
+
+NOTE: 
+Reaching the routes from inside of the application: 
+
+- instead of using buttons to navigate through components, 
+use Inbuilt component with router: 
+
+<router-link to="/teams" ></router-link> component
+
+(Under the hood => <a href="/teams"></a>)
+
+- special anchor tag
+- under the hood renders the a tag. 
+- to="" prop is important. 
+- internally uses slots. 
+- prevents default reload page behavior. 
+- analyzes the link and loads the component that was given 
+to the current link in routs
+
+- given css classes internally to enable styling of active 
+anchor tag (router-link). 
+a.router-link-active and 
+a.router-link-exact-active (for nested paths)
+
+- can configure the name of these active classes using 
+options in the config object for router. 
+linkActiveClass: active, 
+
+NOTE: When only navigation => use link 
+When some task should be done and then navigation must occur 
+  =>  use button. 
+
+
+TOPIC: Programmatic navigation: 
+ (this.$router.push()) 
+
+- .push() takes the path in string and as well as an object. 
+just like to=""
+
+- scenario:  do something and then navigate away. 
+Ex. submit a form & navigate away from that page. 
+
+- navigate away programmatically. No link on the page. 
+Just programmatically
+
+- Since router is added on the app, we can access 
+this.$router.push() ==> to add a new route on the existing router 
+history. 
+
+- this.$router.back() / ....forward()  to emulate back and forward 
+on the browser.  
+
+TOPIC: Passing data with ROUTE PARAMETERS (dynamic segments) 
+
+- Everything that starts with ":" in a route is considered as 
+route parameter/param 
+
+In the routes: [
+  { path: './teams/:teamId', component: c1}, 
+]
+
+- above path will be rendered if anything is written after 
+./teams . Anything after will be interpreted as a value for 
+dynamic segment. 
+
+Ex. ./teams/t1 or ./teams/t2. 
+
+IMPORTANT NOTE: 
+ORDER MATTERS. Put all static routes ABOVE DYNAMIC segments. 
+
+- THE ACTUAL value user entered (in place of dynamic segment placeholder) 
+is accessible inside of component that's being loaded. (c1) 
+[In JS, window.location()]
+
+- IF A COMPONENT IS LOADED THROUGH THE ROUTER, it has access 
+to this.$router and this.$route objects. 
+
+- this.$route.path => path that was responsible to load the component. 
+- this.$route.params => gives access to all params (dynamic segments) 
+used to get to this page. (this.$route.params.paramName
+)
+
+TOPIC: UPDATING params data with watchers: 
+
+CASE: When on a page loaded for dynamic PARAMETER, if 
+you want to visit on another component of the same page 
+Using normal vue-link won't work 
+
+WHY? 
+- Vue router DOESN'T destroy and rebuild the components 
+when we navigate around. (just because url changed) 
+
+- caching them is more efficient than rebuilding them after 
+url changes. So code doesn't re-execute for the component. 
+
+- this.$route CHANGES everytime new link is clicked.
+ALWAYS HOLDS latest information.  
+
+- watch the $route object and then update changes using 
+new value of the $route object when new url is clicked. 
+
+watch: { 
+  $route(updatedValue) { .. }
+}
+
+DOWNSIDE: 
+This component can only be loaded through routing. 
+(router app) as we're relying on the $route object. 
+
+
+TOPIC: 
+Passing Params/Dynamic Parameters as props:
+
+- by default the router loads components and dynamic Parameters
+can't be added as props. 
+
+- can configure using 
+{path: '...:propName', component: name, props:true}
+
+- NOW DYNAMIC PARAMETERS should be passed to the component as
+props rather than on $route object.
+
+- value of prop (propName) will be passed by the url when component is 
+loaded.  
+
+- Now component can be used as long as prop is provided. 
+And it isn't tied to router object. 
+
+NOTE: Getting data from props is much better for reusability 
+than using $route.params property. 
+
+TOPIC: Redirecting Paths
+
+- Nothing is shown if for localhost/ . By default nothing is shown 
+for '/ ' path. 
+
+- Can set a new route for '/ ' path. BUT REDIRECTING IS BETTER. 
+{ path: '/' component:name} ... 1
+{ path: '/' redirect: '../../anotherPath'} 
+
+ALTERNATIVE: alias. BUT WITH redirect, url changes as 
+router is redirected to a different path. But with alias 
+it's not. 
+
+{path: ../../anotherPath, component:name, alias:'/'}
+
+NOTE: CATCH-ALL ROUTES:
+if user enters a path that is wrong. 
+
+- this path handles any path that doesn't match our desired 
+paths and thus is incorrect. 
+- must be placed at the end of the paths[] as it's of 
+least priority. Else it could override others as it has dynamic 
+parameter
+
+NOTE: (.*) is a regular expression. 
+
+{ path: '/:incorrectPath(.*), redirect: ''} 
+or you can create a component and display it. 
+
+TOPIC: Nested routes
+
+- IMPORTANT: Used to build complex User Interfaces with 
+nested components and nested paths.
+
+- ROOT ROUTES: Routes directly registered in the routes[], 
+- Child Routes: Routes Registered inside a root route. 
+
+- { path: '', component: '', children: [
+  // pass routes here like routs[]
+   { path: '', component: ''}
+]}
+
+NOTE: <router-view></router-view> is ONLY responsible for 
+rendering the root routes. 
+Use another nested <router-view></router-view> to render 
+the child routes. 
+
+IMPORTANT: ADD another <router-view></router-view> in the 
+component in which the child component is defined.  
+
+NOTE: Whenever some nested route of current route is active, 
+router-link-active will be applied. But router-link-exact-active 
+won't be added to the a tag. It happens when full match. 
+
+TOPIC: 
+Named Routes and Location Object: 
+
+- In a Vue app with 100s of links construction of manual 
+links is cumbersome. 
+
+- Above features make the construction of links easier. 
+
+- to="" prop of router-link TAKES an object as a value 
+too.
+
+- navigation by named routes is superior to navigation 
+by paths. (path strings) 
+
+- router-link to="" prop also takes an object. 
+(Location Object) 
+
+Instead of manually constructing a path, you can : 
+    { path: '/teams' + this.id  }
+
+- Using named route is much better: 
+
+NOTE: A name can be assigned to every route. Then inside the object 
+which we pass as a value to the to prop, that route can be 
+pointer at. 
+- If the route has dynamic components, then that must be mentioned. 
+
+{ name: 'routeName', params: { teamId: this.id}}
+
+ADVANTAGES:
+ If the path name is changed, all the places don't need to be 
+ updated. Because they reference the name of the route.  
+
+Can also be provided as an argument to the $router.push() method.
+
+TOPIC: QUERY PARAMS. 
+
+- An optional route parameter. 
+- Not needed to find & load a component, but to pass extra info.
+
+- can be added manually to the path. ...?=sort=asc 
+- In object form, query: { sort: "asc"}
+
+- If in use, can be accessed with this.$route.query property IN THE 
+COMPONENT WHICH IS LOADED VIA THE ROUTE
+
+IMPORTANT: Query params are not provided as Props on this. 
+Only accessible from this.$route.query 
+
+TOPIC: RENDERING multiple routes w/ NAMED <router-view>s :
+
+- use case: Rendering multiple components per PATH. 
+
+- If multiple <router-view>s on the same LEVEL, which are 
+dealing with the same routes (ex. root routes),they load 
+same component multiple times. 
+
+- Can load multiple components on same ROUTE and then send 
+them to DIFFERENT Router-views 
+- Instead of adding ONE COMPONENT per route, multiple 
+Components can be added. 
+
+{ path: '', 
+  name: '', 
+  components: { 
+       routerViewNAME: targetComponentName, 
+       default: targetComponentName2
+  }
+}
+
+IMPORTANT: 
+
+- LIKE SLOTS, unnamed router-view will be default router-view. 
+- If only one component is set per route, IT GOES TO THE DEFAULT 
+router-view to be displayed. 
+
+
+TOPIC: CONTROLLING THE SCROLL BEHAVIOR: 
+
+- scrollBehavior(to, from, savedPosition) { } 
+is a function called by vue when page is changed. 
+
+- is a property of the router config object. Apart from routes[], 
+history properties
+
+- returns an object which describes where the BROWSER must 
+scroll to when the page is changed. 
+{left: , top: } 
+
+- The arguments are given implicitly. to and from are 
+this.$route objects. 
+REPRESENT The pages we're going to and coming from.
+
+IMPORTANT NOTE: 
+- savedPosition is ONLY SET if you click back-button. It's set 
+as an object with left & top properties describing the 
+scroll position at the moment when the page (that you went 
+back to using back button) was changed. 
+
+NOTE: If arguments aren't used, then _, _2, _3... and so on. 
+Indicate that you gotta take these arguments to reach the next one 
+but you don't plan on using them. 
+
+
+TOPIC: NAVIGATION GUARDS: (Before entering a new page) 
+
+appropriate use cases: 
+
+- AUTHENTICATION. (Disable access to certain routes 
+if user isn't authenticated). 
+
+- being aware of changing pages.
+ (if code is to be run there) 
+
+- Ensuring that user doesn't navigate away from a page 
+with unsaved changes. Ex. form filling. 
+
+- methods automatically called by vue.
+
+- router calls these navigation guard functions 
+  implicitly BEFORE each navigation action/whenever you 
+  change pages. 
+
+router.beforeEach(function(to, from, next) { 
+  
+   to - route object of page we're going to 
+
+   IMPORTANT: 
+   next- FUNCTION that has to be called EXPLICITLY to either 
+   confirm, halt , or REDIRECT the navigation action.
+
+   - next()/next(true) -> allows the navigation to happen ; 
+     next(false) -> denies the navigation ; 
+
+   - Can also redirect to a specific route:  
+       next('any registered route') 
+       next({any location object describing a route} )
+}) 
+
+THE ABOVE IS GLOBAL NAVIGATION GUARD. 
+The .beforeEach() method will run no matter where we're 
+navigating because it's on the router. 
+
+NOTE:  
+Guarding INDIVIDUAL ROUTES: 
+- In individual route object  (routes[i]) , write 
+        beforeEnter(to, from, next) method 
+
+- will be called before going to the specific route which 
+contains this beforeEnter() method. 
+
+NOTE: IF Route guarding has to be done from component itself, 
+write beforeRouteEnter() method in component config object.
+- will be called BEFORE navigation to this component is 
+confirmed. 
+
+Priorities: (all are called BEFORE route is confirmed)
+Global Level is executed first, 
+then route config level, 
+then component level. 
+
+TOPIC: beforeRouteUpdate(to, from, next) { }
+
+- Another method like 
+    beforeEach()/beforeEnter()/beforeRouteEnter() : 
+   
+- Called on the component level ONLY. (in config object) 
+- Called before COMPONENT IS AGAIN navigated to with new data, 
+(and not being navigated to for the first time) 
+
+TOPIC: afterEach() 
+
+- is called AFTER any navigation is completed. 
+- another GLOBAL GUARD. 
+- DOESN'T get the next() function as argument as afterEach() 
+is called AFTER a navigation is completed.
+- useful for sending analytics to serveer after navigation is done.  
+
+
+TOPIC: ROUTE LEAVE GUARDS: 
+
+- Running some code JUST BEFORE A PAGE IS LEFT (to go to 
+another page). Useful for CANCELLING the imminent
+navigation/warning the user.  
+
+- Component-level guard function. 
+
+- THIS IS called BEFORE the other before guard functions 
+like beforeEach()/beforeEnter()/beforeRouteEnter() for other 
+component(to) are called. 
+
+Ex. When all the form inputs aren't filled and prev button is 
+clicked. 
+
+beforeRouteLeave(to, from, next) { 
+  if (....) next() ; 
+
+  else next(confirm()) 
+}
+
+TOPIC: Route Metadata
+
+- used in conjuction with the navigation guards. 
+- meta property in the route object (routes[i]) 
+- takes any value and in its object can store any value. 
+- can be accessed where $route is available. 
+
+- Based on meta-data on each route, can do something in 
+navigation guards (globally or even at route-level).
+
+Ex. router.beforeEach(to,from,next) { 
+    const needsAuth = to?.meta?.needsAuth ?? false ; 
+
+    if (needsAuth) { ... next()}
+
+    else next(false) ;  or even raise an error.  
+}
+
+
+TOPIC: Organizing route files. (OPTIONAL) : 
+
+- Create Another file for router and then export it and use 
+it in app (app.use()) 
+This router.js file only consists of router related code. 
+
+- If components are loaded through router then they're not 
+registered locally or globally
+- All components registered through ROUTER COULD BE INSIDE a
+separate folder called PAGES. 
+
+- Creates Visual differentiation of components created for being 
+full-blown pages and thus, loaded by router And Components 
+used by other components.
+
+COMPONENTS -> Used to build bigger components/PAGES -> 
+pages are loaded using router. 
+

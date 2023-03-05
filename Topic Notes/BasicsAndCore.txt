@@ -53,6 +53,8 @@ the key-name.
 BINDING with "v-bind" directive: 
 ------------------------------- 
 
+- Simulation of interpolation syntax on html attributes.
+
 NOTE: A VUE directive is an extra instruction (for VUE)
 It's added to HTML elements. 
 
@@ -90,10 +92,7 @@ TOPIC: Data Inside Vue app :
 IMPORTANT: 
 - 'this' keyword in VUE references to GLOBAL INSTANCE OBJECT 
 (Vue.createApp() object) 
-Vue merges all the data returned by the object which was returned by 
-data() function into this global reference object. 
-So it's accessible using `this.propertyName` syntax 
-
+Vue merges all the data returned by the config object in app. 
 
 TOPIC: Raw HTML w/ v-html directive :
 -----------------------------------
@@ -106,6 +105,7 @@ ex. <p v-html="methodName()"></p> OR
     <p v-html="propertyName"></p>
 
 TOPIC: EVENT-BINDING: 
+
 
 - In Vanilla Js, need to bind event listener to the element and 
 listen to a particular event.  
@@ -225,7 +225,9 @@ NOTE: IF you bind the value (v-bind:value="") and listen to changes
 on the input EVENT on input HTML element (v-on:input=""), 
 VUE has another directive to replace the two directives
 
-<input type="text" v-on:input="" v-bind:value="">
+<input type="text"  
+       v-on:input="updateProperty()"
+       v-bind:value="updatedProperty">
 
 IMPORTANT shortcut for above two directives: v-model="". 
 VUE listens to input event on the (HTML input element) and updates
@@ -312,7 +314,7 @@ data than watchers IF ONE/MORE DEPENDENCIES are changed because
 if we use watchers, FOR EACH dependency that could be changed, 
 we need a separate watcher with a lot of duplication. 
 
-- computed property and watcher both watches the change in data
+- computed property and watcher both watch the change in data
 property for which it was created (for watcher)/ which was used 
 in the method (for computed property) 
 
@@ -351,6 +353,7 @@ IMPORTANT SHORTHANDS
 
 v-on:click.right="" ====>  @click.right="" 
 v-bind:value ="" =====> :value="" 
+v-slot:slotName/default ====> #slotName 
 
 
 TOPIC: Dynamic Stylings with Inline Styles: 
@@ -464,7 +467,7 @@ visibility status (show/hide) changes a lot.
 TOPIC: Rendering Lists Of DATA: (v-for="JS expression")
 -----------------------------
 
-- In js done using for-loops and insertAdjancentHTML
+- In js done using for-loops and insertAdjancentHTML('htmlstring', position) 
 
 - use to render list of users, products etc. 
 - just like for of loop in JS. In each iteration, we work with an element 
@@ -538,4 +541,4 @@ Ex.
 
 
 NOTE: DON'T USE v-for="" and v-if=""  directives on the same element.
-Use wrapper for v-if   
+Use wrapper element for v-if and child element should contain v-for

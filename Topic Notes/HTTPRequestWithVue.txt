@@ -34,7 +34,6 @@ that code parses our request, extracts the data, and writes it
 to realtime data-base. (we don't interact with data-base). 
 - add /identifier.json to URL for firebase requirements. 
 
-
 NOTE: HOW to send HTTP request ? 
 
 - third-party packages like AXIOUS are useful for sending HTTP request 
